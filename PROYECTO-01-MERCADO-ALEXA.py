@@ -4,7 +4,7 @@ Bienvenidos a mi código :D
 Elaborado por: Alexa Mercado
 
 """
-#Aquí se importan desde el archivo lifestore_file.py los 3 strings que usaremos
+#Aquí se importan desde el archivo lifestore_file.py las 3 listas que usaremos
 from lifestore_file import lifestore_products as LP
 from lifestore_file import lifestore_sales as LSa
 from lifestore_file import lifestore_searches as LSe
@@ -33,7 +33,7 @@ def sorteo(b,lista2,x):
 def counter(list1,x): #Función para contabilizar la recurrencia de un dato en una lista
   lista=[]
   lista2=[]
-  if x==True: #Es true cuando se necesitan anidar dos parámetros por iteración a la lista, como el caso de la valoración que sería [id, calificación] o reembolso que sería [id, 1/0]
+  if x==True: #Es true cuando se necesitan anidar dos parámetros por iteración a la lista, como el caso de la valoración que sería [id, reembolso] o reembolso que sería [id, 1/0]
     valores=[[lista[0],lista[1]] for lista in list1] #le asigna los valores de los índices 0 y 1 de la lista de entrada a la variable valores
   else: #En caso de que sólo se necesite 1 valor, como el caso de búsquedas con el id del producto buscado
     valores=[lista for lista in list1] #le asigna los valores de la lista de entrada a valores
@@ -92,20 +92,18 @@ for venta in LSa: #itera en cada elemento de la lista lifestore_sales
     if venta[1]==J[0]: #revisa que los índices que contienen el id del producto sean iguales
       ventas.append([venta[1],J[3]]) #hace append del id del producto y su categoría
 
-for search in LSe:
+for search in LSe: #itera en cada búsqueda de lifestore_searches
   busca.append(search[1]) #genera una lista con todos los IDs de búsquedas
 
-for rating in LSa: 
+for rating in LSa: #por cada elemento en lifestore_sales
   if rating[2]<=3: #en caso de que el rating encontrado en el elemento de lifestore_sales sea menor o igual a tres se considera mala review
     bajos.append([rating[1],rating[4]]) #en la lista bajos se añade el [id,reembolso (1/0)]
   else:  #en caso de que el rating sea mayor a 3 estrellas
     altos.append([rating[1],rating[4]]) #en la lista altos se añade el [id,reembolso (1/0)]
 for i in bajos: 
   if i in altos: #en caso de que un elemento esté tanto en la lista de altos y bajos
-    #print("ID: Rating alto y bajo:     ",i[0])
     ratingdual.append(i) #se añade a la lista de rating dual
   if i[1]==1: #en caso de que se haya reembolsado
-    #print("ID: Producto con reembolso: ", i[0])
     reembolso.append(i) #se añade a la lista de los elementos con reembolso
 
 
@@ -225,11 +223,13 @@ while(True): #Bucle infinito
   |9.- Meses con más ventas       |
   |_______________________________|
   """)
+
   decision=int(decision) #Haciendo cast de la variable a int
   print(100*"\n") # Para limpiar pantalla
   
   index=0 #Nos permitirá enumerar las listas de salida como counter
 
+  #Generando los headers de las distintas tablas posibles
   tablav="|  Lugar  |  ID  |  Ventas   |"
   tablab="|  Lugar  |  ID  | Búsquedas |"
   tablar="|  Lugar  |  ID  |  #Ratings |"
@@ -269,13 +269,14 @@ while(True): #Bucle infinito
       print("Hasta la vista, baby")
       exit(1)
   
-  elif decision==3: #Búsquedas menores
+  elif decision==3: #Ventas menores
     dcateg=[] #Se genera una variable que almacenará las categorías
-    dec=input("¿De cuántos items deseas menores búsquedas? \n")
+    dec=input("¿De cuántos items deseas menores ventas? \n")
     lowventas=sorteo(int(dec),ventascontadas,'low') #Sort ascendente de "dec" búsquedas cuantificadas 
     bajventas=sorteo(len(LSa),ventascontadas,'low') #La peor situación es que tuviéramos una categoría por venta, por lo que se genera esta lista que considera esa opción
 
-    print(tablab)
+    index=0
+    print(tablav)
     for i in lowventas:
       index+=1
       print( "| ",index, "      ", i[1][0],"       ",i[0])
@@ -295,6 +296,8 @@ while(True): #Bucle infinito
       ca=input("Elige tu categoría: \n")
       ca=int(ca)
       cat=dcateg[ca-1] #La categoría elegida sería de n-1 ya que nuestras listas empiezan con índice 0
+
+      num=0
       num=input("Elige cuántos items quieres de esa categoría: \n")
       num=int(num)
 
@@ -310,7 +313,7 @@ while(True): #Bucle infinito
         if i<len(categoriaelegida):
           resultadocat.append(categoriaelegida[i])
         else: resultadocat.append('Out of range') #Siempre teniendo en cuenta si excede los datos existentes en la lista
-        
+
       index=0
       for i in resultadocat:
         index+=1
@@ -357,7 +360,7 @@ while(True): #Bucle infinito
       index+=1
       print( "| ",index, "      ", i[1][0],"       ",i[0])
     
-    print("\n Los IDs de productos que recibieron reviews tanto buenas como malas son: ")
+    print("\nLos IDs de productos que recibieron reviews tanto buenas como malas son ")
     for i in ratingdual:
       print(i[0])
 
@@ -384,7 +387,7 @@ while(True): #Bucle infinito
         print( "| ",index, "      ", i[1][0],"       ",i[0], "          ",i[1][1])
       else: print( "| ",index, "      ", "---","     ","---", "        ","---") #En caso de que la petición esté fuera del rango, imprime esto
 
-    print("\n Los IDs de productos que recibieron reviews tanto buenas como malas son: ")
+    print("\nLos IDs de productos que recibieron reviews tanto buenas como malas son")
     for i in ratingdual:
       print(i[0])
 
