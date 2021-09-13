@@ -271,8 +271,13 @@ while(True): #Bucle infinito
   
   elif decision==3: #Ventas menores
     dcateg=[] #Se genera una variable que almacenará las categorías
+    categoriaelegida=[]
+    resultadocat=[]
+    dec=0
     dec=input("¿De cuántos items deseas menores ventas? \n")
+    lowventas=[]
     lowventas=sorteo(int(dec),ventascontadas,'low') #Sort ascendente de "dec" búsquedas cuantificadas 
+    bajventas=[]
     bajventas=sorteo(len(LSa),ventascontadas,'low') #La peor situación es que tuviéramos una categoría por venta, por lo que se genera esta lista que considera esa opción
 
     index=0
@@ -293,6 +298,7 @@ while(True): #Bucle infinito
           print(index,".- ",i[3])
           dcateg.append(i[3])
        
+      ca=0
       ca=input("Elige tu categoría: \n")
       ca=int(ca)
       cat=dcateg[ca-1] #La categoría elegida sería de n-1 ya que nuestras listas empiezan con índice 0
@@ -308,7 +314,7 @@ while(True): #Bucle infinito
         if i != 'Out of range':
           if i[1][1]==cat:
             categoriaelegida.append(i) #Va introduciendo dependiendo la categoría que eligió el usuario los elementos correspondientes a la misma
-   
+
       for i in range(num): #Itera el número de veces que el usuario haya elegido
         if i<len(categoriaelegida):
           resultadocat.append(categoriaelegida[i])
